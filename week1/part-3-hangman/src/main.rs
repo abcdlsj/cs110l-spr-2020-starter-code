@@ -34,7 +34,37 @@ fn main() {
     // secret_word by doing secret_word_chars[i].
     let secret_word_chars: Vec<char> = secret_word.chars().collect();
     // Uncomment for debugging:
-    // println!("random word: {}", secret_word);
+    println!("random word: {}", secret_word);
 
     // Your code here! :)
+    let mut word: Vec<char> = vec!['-'; secret_word_chars.len()];
+    let mut num: u32 = NUM_INCORRECT_GUESSES;
+    let mut gussed: String = String::new();
+
+    println!("Welcome to CS110L Hangman!");
+    while num > 0 {
+        print!("The word so far is ");
+        for e in word.iter() {
+            print!("{}", e);
+        }
+        println!("\nYou have guessed the following letters: {}", gussed);
+        println!("You have {} guesses left", num);
+        let mut guss = String::new();
+        print!("Please guess a letter: ");
+        io::stdout().flush().expect("stdout err");
+        io::stdin().read_line(&mut guss).expect("stdin err");
+        let guss_vec: Vec<char> = guss.chars().collect();
+        gussed.push(guss_vec[0]);
+        if secret_word_chars.contains(&guss_vec[0]) {
+            let idx = secret_word_chars
+                .iter()
+                .position(|&r| r == guss_vec[0])
+                .unwrap();
+            word[idx] = guss_vec[0];
+        } else {
+            num -= 1;
+            println!("Sorry, that letter is not in the word");
+        }
+        println!();
+    }
 }
