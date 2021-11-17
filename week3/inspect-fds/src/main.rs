@@ -13,7 +13,15 @@ fn main() {
     let target = &args[1];
 
     let r = ps_utils::get_target(&target).expect("error in ps_utils::get_target");
-
+    
+    let r = if let Some(a) = r {
+        println!("Found pid {}", a.pid);
+        a
+    } else {
+        println!("Target \"{}\" did not match any running PIDs or executables",
+        target);
+        std::process::exit(1);
+    };
 }
 
 #[cfg(test)]
